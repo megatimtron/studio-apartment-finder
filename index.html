@@ -838,10 +838,6 @@
                     this.setupRecommendationsData();
                     this.setupComparativeTablesData();
                     
-                    // Debug: Check if elements are populated
-                    console.log('Property data loaded:', this.propertyData?.length || 0, 'properties');
-                    console.log('Profiles container:', document.getElementById('property-profiles-container'));
-                    
                     // Add a small delay to ensure DOM is ready
                     setTimeout(() => {
                         // Initialize all data and charts
@@ -1191,18 +1187,15 @@
                 }
                 
                 populateProfiles() {
-                    console.log('populateProfiles called');
                     const container = document.getElementById('property-profiles-container');
-                    console.log('Container found:', container);
-                    console.log('Property data:', this.propertyData);
                     
                     if (!container) {
-                        console.error('Container not found!');
+                        console.error('Profiles container not found!');
                         return;
                     }
                     
                     if (!this.propertyData || this.propertyData.length === 0) {
-                        console.error('No property data!');
+                        console.error('No property data available!');
                         return;
                     }
                     
@@ -1210,9 +1203,7 @@
                     container.innerHTML = '';
                     
                     this.propertyData.forEach((p, index) => {
-                        console.log('Processing property:', p.name);
-                        
-                        // Create simple profile element
+                        // Create profile element
                         const profileDiv = document.createElement('div');
                         profileDiv.className = 'property-card p-8 scroll-mt-24 mb-8';
                         profileDiv.id = p.id;
@@ -1282,10 +1273,7 @@
                         `;
                         
                         container.appendChild(profileDiv);
-                        console.log('Added profile for:', p.name);
                     });
-                    
-                    console.log('populateProfiles completed, container children:', container.children.length);
                 }
                 
                 populateComparativeTables() {

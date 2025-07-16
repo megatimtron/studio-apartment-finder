@@ -328,9 +328,150 @@
                 background-position: -100% 50%;
             }
         }
+        
+        /* Enhanced Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        .focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+        
+        /* Advanced Scroll Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .scroll-reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .scroll-reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .scroll-reveal-left.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .scroll-reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        
+        .scroll-reveal-right.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Enhanced Mobile Touch */
+        @media (hover: none) and (pointer: coarse) {
+            .btn-modern:hover {
+                transform: none;
+                box-shadow: var(--shadow-soft);
+            }
+            
+            .btn-modern:active {
+                transform: scale(0.95);
+                transition: transform 0.1s ease;
+            }
+            
+            .card-modern:hover {
+                transform: none;
+                box-shadow: var(--shadow-soft);
+            }
+            
+            .card-modern:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
+        }
+        
+        /* Improved Loading States */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Enhanced Performance */
+        .will-change-transform {
+            will-change: transform;
+        }
+        
+        .will-change-opacity {
+            will-change: opacity;
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            .animate-fade-in,
+            .animate-slide-up,
+            .scroll-reveal,
+            .scroll-reveal-left,
+            .scroll-reveal-right {
+                animation: none;
+                transition: none;
+            }
+            
+            .loading-skeleton {
+                animation: none;
+            }
+        }
     </style>
 </head>
 <body class="text-gray-800 antialiased">
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <span class="sr-only">Loading content...</span>
+    </div>
+    
     <div class="scroll-indicator"></div>
     
     <div id="app" class="min-h-screen">
@@ -348,19 +489,19 @@
             </div>
         </header>
 
-        <nav class="sticky-nav sticky top-0 z-50 py-4 border-b border-gray-200">
+        <nav class="sticky-nav sticky top-0 z-50 py-4 border-b border-gray-200" role="navigation" aria-label="Main navigation">
             <div class="container mx-auto px-4">
-                <ul class="flex justify-center items-center space-x-8">
-                    <li><a href="#comparison-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2">Comparison</a></li>
-                    <li><a href="#profiles-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2">Profiles</a></li>
-                    <li><a href="#comparative-insights-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2">Insights</a></li>
-                    <li><a href="#recommendations-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2">Recommendations</a></li>
+                <ul class="flex justify-center items-center space-x-8" role="menubar">
+                    <li role="none"><a href="#comparison-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2" role="menuitem" aria-label="Go to comparison section">Comparison</a></li>
+                    <li role="none"><a href="#profiles-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2" role="menuitem" aria-label="Go to profiles section">Profiles</a></li>
+                    <li role="none"><a href="#comparative-insights-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2" role="menuitem" aria-label="Go to insights section">Insights</a></li>
+                    <li role="none"><a href="#recommendations-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2" role="menuitem" aria-label="Go to recommendations section">Recommendations</a></li>
                 </ul>
             </div>
         </nav>
 
         <main class="container mx-auto px-4 py-8">
-            <section id="comparison-section" class="mb-20 animate-slide-up">
+            <section id="comparison-section" class="mb-20 scroll-reveal">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl font-bold gradient-text mb-4">Property Comparison</h2>
                     <p class="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -368,14 +509,14 @@
                     </p>
                 </div>
                 
-                <div class="card-modern p-8 mb-8">
+                <div class="card-modern p-8 mb-8 scroll-reveal-left">
                     <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
-                        <div class="feature-icon">
+                        <div class="feature-icon will-change-transform">
                             <span>📊</span>
                         </div>
                         <div class="flex-1 text-center md:text-left">
                             <label for="priority-filter" class="text-lg font-semibold text-gray-700 block mb-2">Prioritize by:</label>
-                            <select id="priority-filter" class="bg-white border-2 border-gray-200 text-gray-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                            <select id="priority-filter" class="bg-white border-2 border-gray-200 text-gray-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all" aria-label="Select priority for comparison">
                                 <option value="overall" selected>Overall Score</option>
                                 <option value="value">Best Value (Price)</option>
                                 <option value="quiet">Quietest Environment</option>
@@ -385,23 +526,24 @@
                         </div>
                     </div>
                     <div class="chart-container">
-                        <canvas id="property-chart"></canvas>
+                        <canvas id="property-chart" aria-label="Property comparison chart"></canvas>
+                        <div id="chart-loading" class="loading-skeleton h-96 rounded-lg" style="display: none;"></div>
                     </div>
                 </div>
                 
                 <div class="grid md:grid-cols-3 gap-6 mb-12">
-                    <div class="card-modern p-6 text-center">
-                        <div class="feature-icon mx-auto">💰</div>
+                    <div class="card-modern p-6 text-center scroll-reveal will-change-transform" style="transition-delay: 0.1s;">
+                        <div class="feature-icon mx-auto will-change-transform">💰</div>
                         <h3 class="text-xl font-semibold mb-2">Best Value</h3>
                         <p class="text-gray-600">Compare pricing and get the most for your money</p>
                     </div>
-                    <div class="card-modern p-6 text-center">
-                        <div class="feature-icon mx-auto">🏊</div>
+                    <div class="card-modern p-6 text-center scroll-reveal will-change-transform" style="transition-delay: 0.2s;">
+                        <div class="feature-icon mx-auto will-change-transform">🏊</div>
                         <h3 class="text-xl font-semibold mb-2">Premium Amenities</h3>
                         <p class="text-gray-600">Luxury pools, fitness centers, and modern spaces</p>
                     </div>
-                    <div class="card-modern p-6 text-center">
-                        <div class="feature-icon mx-auto">🏙️</div>
+                    <div class="card-modern p-6 text-center scroll-reveal will-change-transform" style="transition-delay: 0.3s;">
+                        <div class="feature-icon mx-auto will-change-transform">🏙️</div>
                         <h3 class="text-xl font-semibold mb-2">Prime Location</h3>
                         <p class="text-gray-600">Downtown convenience with walkable access</p>
                     </div>
@@ -559,7 +701,643 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const propertyData = [
+            // Enhanced Performance and Animations
+            class ModernUI {
+                constructor() {
+                    this.init();
+                }
+                
+                init() {
+                    this.setupLoading();
+                    this.setupScrollAnimations();
+                    this.setupScrollIndicator();
+                    this.setupAccessibility();
+                    this.setupNavigation();
+                    this.initializeData();
+                }
+                
+                setupLoading() {
+                    window.addEventListener('load', () => {
+                        const loadingOverlay = document.querySelector('.loading-overlay');
+                        setTimeout(() => {
+                            loadingOverlay.classList.remove('active');
+                        }, 500);
+                    });
+                }
+                
+                setupScrollAnimations() {
+                    const observerOptions = {
+                        threshold: 0.1,
+                        rootMargin: '0px 0px -50px 0px'
+                    };
+                    
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                            }
+                        });
+                    }, observerOptions);
+                    
+                    document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right').forEach(el => {
+                        observer.observe(el);
+                    });
+                }
+                
+                setupScrollIndicator() {
+                    const scrollIndicator = document.querySelector('.scroll-indicator');
+                    
+                    const updateScrollIndicator = () => {
+                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                        const scrollPercentage = (scrollTop / scrollHeight) * 100;
+                        
+                        scrollIndicator.style.transform = `scaleX(${scrollPercentage / 100})`;
+                    };
+                    
+                    window.addEventListener('scroll', updateScrollIndicator, { passive: true });
+                }
+                
+                setupAccessibility() {
+                    // Enhanced keyboard navigation
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Tab') {
+                            document.body.classList.add('keyboard-navigation');
+                        }
+                    });
+                    
+                    document.addEventListener('mousedown', () => {
+                        document.body.classList.remove('keyboard-navigation');
+                    });
+                    
+                    // Focus management for nav links
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    navLinks.forEach(link => {
+                        link.addEventListener('focus', () => {
+                            link.classList.add('focus-visible');
+                        });
+                        
+                        link.addEventListener('blur', () => {
+                            link.classList.remove('focus-visible');
+                        });
+                    });
+                }
+                
+                setupNavigation() {
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    
+                    navLinks.forEach(link => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            
+                            // Remove active class from all links
+                            navLinks.forEach(l => l.classList.remove('active'));
+                            
+                            // Add active class to clicked link
+                            link.classList.add('active');
+                            
+                            // Smooth scroll to section
+                            const targetId = link.getAttribute('href').substring(1);
+                            const targetElement = document.getElementById(targetId);
+                            
+                            if (targetElement) {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }
+                        });
+                    });
+                    
+                    // Update active nav link on scroll
+                    const sections = document.querySelectorAll('section[id]');
+                    const observerOptions = {
+                        threshold: 0.6,
+                        rootMargin: '-20% 0px -70% 0px'
+                    };
+                    
+                    const navObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                navLinks.forEach(link => {
+                                    link.classList.remove('active');
+                                    if (link.getAttribute('href') === `#${entry.target.id}`) {
+                                        link.classList.add('active');
+                                    }
+                                });
+                            }
+                        });
+                    }, observerOptions);
+                    
+                    sections.forEach(section => navObserver.observe(section));
+                }
+                
+                initializeData() {
+                    // Initialize property data
+                    this.setupPropertyData();
+                    this.setupRecommendationsData();
+                    this.setupComparativeTablesData();
+                    
+                    // Initialize all data and charts
+                    this.initializeCharts();
+                    this.populateProfiles();
+                    this.populateComparativeTables();
+                    this.populateRecommendations();
+                }
+                
+                setupPropertyData() {
+                    this.propertyData = [
+                        {
+                            id: 'anthem',
+                            name: 'The Anthem at Square 10',
+                            overview: 'The Anthem at Square 10 is a newly developed, sustainably designed luxury apartment community in downtown New Haven, representing the initial phase of the larger "Square 10" development. It emphasizes ultra-modern amenities and a vibrant public plaza, aiming to create a new urban living experience where legends once performed.',
+                            floorPlansPricing: {
+                                range: '$1,795 - $2,335',
+                                sqFt: 'Varies (S1, S2, S3, S4, S5)',
+                                special: 'Up to two months free on select apartment homes for summer move-ins. Contact leasing office to confirm for studios.',
+                                availability: 'Currently Available'
+                            },
+                            amenities: ['Oasis Pool', 'Health Club', 'Great Hall (Gaming/Co-working)', 'Private Club/Sound Stage', 'Rooftop Deck', 'Indoor/Outdoor Yoga', 'Office Center/Conference Room', 'Club House', 'Public Plaza', 'BBQ/Picnic Areas', 'Proximity to Wooster Square Park'],
+                            pros: ['Overwhelmingly positive management feedback', 'No noise complaints', 'Modern amenities', 'Sustainable design', 'Great location'],
+                            cons: ['Higher price point', 'Limited availability', 'New construction'],
+                            overallLiving: 'Highly positive; "Full contentment," "dream manifested." Modern, walkable location, pet-friendly.',
+                            scores: { overall: 4.5, quiet: 4.8, management: 4.9, amenities: 4.3, value: 4.2 }
+                        },
+                        {
+                            id: 'whit',
+                            name: 'The Whit',
+                            overview: 'The Whit is a contemporary apartment complex in downtown New Haven that combines modern amenities with prime location near Yale University. It features a distinctive courtyard pool and extensive amenities in a vibrant urban setting.',
+                            floorPlansPricing: {
+                                range: '~$2,400+',
+                                sqFt: 'Varies (studio options)',
+                                special: 'Up to 2-Months Free (select units)',
+                                availability: 'Varies, contact property'
+                            },
+                            amenities: ['Courtyard Pool', 'Fitness/Yoga Center', 'Club Room', 'Game Room', 'Co-working Space', 'Concierge', 'Rooftop Terrace', 'Dog Park Access'],
+                            pros: ['Staff responsive/helpful', 'Modern apartments', 'Great location near Yale', 'Pet-friendly'],
+                            cons: ['Major noise concerns', 'Parking issues', 'Slow elevators', 'Can feel generic'],
+                            overallLiving: 'Modern, convenient, great location (near Yale). Drawbacks: parking, slow elevators. Can feel generic.',
+                            scores: { overall: 3.5, quiet: 2.5, management: 3.8, amenities: 4.0, value: 3.2 }
+                        },
+                        {
+                            id: 'audubon',
+                            name: 'The Audubon',
+                            overview: 'The Audubon is a luxury apartment complex offering extensive amenities including multiple fitness centers, a golf simulator, and unique features like a sound lounge. It emphasizes premium living with comprehensive recreational facilities.',
+                            floorPlansPricing: {
+                                range: '$2,269 - $2,490+',
+                                sqFt: 'Varies (studios available)',
+                                special: 'None explicitly stated',
+                                availability: 'August 4, 2025 (S1)'
+                            },
+                            amenities: ['Multiple Fitness Centers', 'Golf Simulator', 'Game Room', 'Sound Lounge', 'Co-working Space', 'Pool Deck', 'Rooftop Lounge/Gardens', 'Urban Green Space'],
+                            pros: ['Extensive amenities', 'Multiple fitness centers', 'Unique sound lounge', 'Premium location'],
+                            cons: ['Major noise issues', 'Inconsistent management', 'Safety concerns', 'High price'],
+                            overallLiving: 'Mixed; "Glorified dorm" or "nightmare" due to noise/management. Safety concerns (garage break-ins). Good location.',
+                            scores: { overall: 2.8, quiet: 2.0, management: 2.5, amenities: 4.5, value: 2.8 }
+                        },
+                        {
+                            id: 'state360',
+                            name: '360 State Street',
+                            overview: '360 State Street is a luxury high-rise featuring a rooftop heated pool and comprehensive amenities. It offers urban living with premium features including concierge services and extensive common spaces.',
+                            floorPlansPricing: {
+                                range: '$2,304+',
+                                sqFt: 'Varies (studios available)',
+                                special: 'Up to 2-Months Free (select units)',
+                                availability: 'Varies, contact property'
+                            },
+                            amenities: ['Rooftop Heated Pool', 'Fitness Center', 'Co-working Space', 'Game Room', 'Golf Simulator', 'Concierge', 'Rooftop Deck', 'Grilling Stations'],
+                            pros: ['Prime location', 'Heated rooftop pool', 'Nice community', 'Maintenance praised'],
+                            cons: ['Overpriced', 'Noise issues', 'Management problems', 'Amenity degradation'],
+                            overallLiving: 'Prime location, nice community, but overpriced. Amenities degrading, common spaces limited hours.',
+                            scores: { overall: 3.2, quiet: 2.8, management: 3.0, amenities: 3.8, value: 2.9 }
+                        },
+                        {
+                            id: 'corsair',
+                            name: 'Corsair Apartments',
+                            overview: 'Corsair Apartments provides a neighborhood feel with extensive outdoor amenities including bocce court, pizza oven, and movie theater. It emphasizes community living with diverse recreational options.',
+                            floorPlansPricing: {
+                                range: '$2,337+',
+                                sqFt: 'Varies (studios available)',
+                                special: 'None explicitly stated',
+                                availability: 'Varies, contact property'
+                            },
+                            amenities: ['Heated Courtyard Pool', 'Fitness Center (Peloton)', 'Game Room', 'Library', 'Movie Room', 'Business Center', 'Bocce Court', 'Pizza Oven', 'Lawnside Movie Theater'],
+                            pros: ['Old-fashioned neighborhood feel', 'Excellent amenities', 'Dog-friendly', 'Positive management'],
+                            cons: ['Traffic noise from highway', 'Frequent fire alarms', 'High utility costs', 'Homeless population nearby'],
+                            overallLiving: 'Positive; "At home," "old fashioned neighborhood" feel. Drawbacks: street parking, homeless population nearby, high utility costs.',
+                            scores: { overall: 3.8, quiet: 3.0, management: 3.9, amenities: 4.2, value: 3.5 }
+                        }
+                    ];
+                }
+                
+                setupRecommendationsData() {
+                    this.recommendationsData = {
+                        tailored: [
+                            {
+                                title: 'For Budget-Conscious Luxury Seekers:',
+                                text: '<strong>The Anthem at Square 10</strong> offers the most competitive rents and valuable "months free" specials, providing premium amenities at the best value.'
+                            },
+                            {
+                                title: 'For Those Prioritizing Quiet:',
+                                text: 'While no downtown location is silent, <strong>The Anthem at Square 10</strong> is the standout, with no negative noise complaints in resident reviews, a major differentiator.'
+                            },
+                            {
+                                title: 'For Amenity Enthusiasts:',
+                                text: '<strong>The Audubon</strong> and <strong>360 State Street</strong> offer the most extensive lists of amenities, including unique features like sound lounges and a rooftop pool. <strong>Corsair</strong> also provides a wide array of recreational outdoor amenities.'
+                            },
+                            {
+                                title: 'For Strong Management Preference:',
+                                text: '<strong>The Anthem at Square 10</strong> receives consistently and overwhelmingly positive feedback for its helpful and attentive staff, suggesting a smoother living experience.'
+                            }
+                        ],
+                        diligence: [
+                            {
+                                title: 'Verify Effective Rent',
+                                text: 'Contact leasing offices to confirm specials and calculate your true monthly cost over the lease term.'
+                            },
+                            {
+                                title: 'Conduct Multiple In-Person Tours',
+                                text: 'Visit at different times (day, night, weekend) to assess real-world noise levels and community vibe.'
+                            },
+                            {
+                                title: 'Engage with Current Residents',
+                                text: 'If possible, ask residents about their experiences with management, noise, and amenity upkeep.'
+                            },
+                            {
+                                title: 'Inquire About Rule Enforcement',
+                                text: 'Ask management directly how they handle noise complaints and enforce community rules to gauge their effectiveness.'
+                            },
+                            {
+                                title: 'Consider Long-Term Outlook',
+                                text: 'Reflect on potential future changes that could impact the living experience over time, including possible shifts in management, planned construction, or evolving resident demographics.'
+                            }
+                        ]
+                    };
+                }
+                
+                setupComparativeTablesData() {
+                    this.comparativeTablesData = {
+                        studioComparison: [
+                            {
+                                propertyName: '360 State Street',
+                                priceRange: '$2,304+',
+                                specials: 'Up to 2-Months Free (select units)',
+                                poolType: 'Rooftop (Heated)',
+                                commonSpaces: 'Fitness, Co-working, Game Room, Golf Sim, Concierge',
+                                outdoorSpaces: 'Rooftop Deck, Cabanas, Grilling Stations, Green Space',
+                                availability: 'Varies, contact property'
+                            },
+                            {
+                                propertyName: 'The Whit',
+                                priceRange: '~$2,400+',
+                                specials: 'Up to 2-Months Free (select units)',
+                                poolType: 'Courtyard',
+                                commonSpaces: 'Fitness/Yoga, Club Room, Game Room, Co-working, Concierge',
+                                outdoorSpaces: 'Rooftop Terrace (Bar, BBQ, Fire Pits), Courtyard, Dog Park (nearby)',
+                                availability: 'Varies, contact property'
+                            },
+                            {
+                                propertyName: 'The Audubon',
+                                priceRange: '$2,269 - $2,490+',
+                                specials: 'None explicitly stated',
+                                poolType: 'Pool Deck',
+                                commonSpaces: 'Multiple Fitness Centers, Golf Sim, Game Room, Sound Lounge, Co-working',
+                                outdoorSpaces: 'Rooftop Lounge/Gardens, Grill/Cabana, Urban Green Space, Bonfire Pit',
+                                availability: 'August 4, 2025 (S1)'
+                            },
+                            {
+                                propertyName: 'The Anthem at Square 10',
+                                priceRange: '$1,795 - $2,335',
+                                specials: 'Up to 2-Months Free (select units)',
+                                poolType: 'Outdoor Oasis',
+                                commonSpaces: 'Health Club, Great Hall (Gaming, Co-working), Private Club/Sound Stage, Cafe',
+                                outdoorSpaces: 'Courtyard, Public Plaza, Roof Deck, Indoor/Outdoor Yoga, BBQ/Picnic',
+                                availability: 'Currently Available'
+                            },
+                            {
+                                propertyName: 'Corsair Apartments',
+                                priceRange: '$2,337+',
+                                specials: 'None explicitly stated',
+                                poolType: 'Heated Courtyard Pool',
+                                commonSpaces: 'Fitness Center (Peloton), Game Room, Library, Movie Room, Business Center, Package Concierge',
+                                outdoorSpaces: 'Cabanas, Bocce Court, Fire Pit, Grilling Stations, Pizza Oven, Lawnside Movie Theater, Roof Deck',
+                                availability: 'Varies, contact property'
+                            }
+                        ],
+                        residentExperience: [
+                            {
+                                propertyName: '360 State Street',
+                                management: 'Mixed; Maintenance praised, leasing office confused/obstructive. New management (South Oxford) criticized for degradation, poor communication, safety issues.',
+                                noise: 'Significant concern; Street, train, thin walls. Loud music, sirens, train horns common.',
+                                overallLiving: 'Prime location, nice community, but overpriced. Amenities degrading, common spaces limited hours.',
+                                petIssues: 'Pet-friendly.'
+                            },
+                            {
+                                propertyName: 'The Whit',
+                                management: 'Mixed; Staff responsive/helpful, but inconsistent rule enforcement (pets). Some find management uncaring.',
+                                noise: 'Major concern; LOUD downtown noise (bikes, stereos, drag racing), frequent train sounds. Unit-to-unit quiet.',
+                                overallLiving: 'Modern, convenient, great location (near Yale). Drawbacks: parking, slow elevators. Can feel generic.',
+                                petIssues: 'Pet-friendly, but poor rule enforcement (barking, pee, pool deck).'
+                            },
+                            {
+                                propertyName: 'The Audubon',
+                                management: 'Highly polarized; Praised as "super nice" by some, but others find them incompetent, unconcerned, not enforcing rules (noise, safety).',
+                                noise: 'Major concern; Loud, inconsiderate neighbors ("frat house" vibe). Rules not enforced.',
+                                overallLiving: 'Mixed; "Glorified dorm" or "nightmare" due to noise/management. Safety concerns (garage break-ins). Good location.',
+                                petIssues: 'Pet-friendly.'
+                            },
+                            {
+                                propertyName: 'The Anthem at Square 10',
+                                management: 'Overwhelmingly positive; Staff helpful, patient, courteous, attentive.',
+                                noise: 'No negative comments reported.',
+                                overallLiving: 'Highly positive; "Full contentment," "dream manifested." Modern, walkable location, pet-friendly.',
+                                petIssues: 'Pet-friendly.'
+                            },
+                            {
+                                propertyName: 'Corsair Apartments',
+                                management: 'Mixed; Many praise management and maintenance. Some report communication breakdowns, closing shared amenities for private events.',
+                                noise: 'Mixed; Official rating 5/5, but others report "significant traffic noise from highway 91" that is "24/7" and disruptive. Frequent fire alarms.',
+                                overallLiving: 'Positive; "At home," "old fashioned neighborhood" feel. Drawbacks: street parking, homeless population nearby, high utility costs, can feel like a dorm.',
+                                petIssues: 'Dog-friendly.'
+                            }
+                        ]
+                    };
+                }
+                
+                initializeCharts() {
+                    const ctx = document.getElementById('property-chart').getContext('2d');
+                    this.propertyChart = null;
+                    
+                    document.getElementById('priority-filter').addEventListener('change', (e) => {
+                        this.updateChart(e.target.value);
+                    });
+                    
+                    this.updateChart('overall');
+                }
+                
+                updateChart(metric) {
+                    this.propertyData.sort((a, b) => {
+                        if (metric === 'value') {
+                            return a.floorPlansPricing.range.split('-')[0].replace(/[^0-9.]/g, '') - b.floorPlansPricing.range.split('-')[0].replace(/[^0-9.]/g, '');
+                        }
+                        return b.scores[metric] - a.scores[metric];
+                    });
+
+                    const labels = this.propertyData.map(p => p.name);
+                    const data = this.propertyData.map(p => metric === 'value' ? p.floorPlansPricing.range.split('-')[0].replace(/[^0-9.]/g, '') : p.scores[metric]);
+
+                    let labelText = '';
+                    let backgroundColor = 'rgba(13, 148, 136, 0.6)';
+                    let borderColor = 'rgba(13, 148, 136, 1)';
+                    let hoverBackgroundColor = 'rgba(15, 118, 110, 1)';
+
+                    switch(metric) {
+                        case 'value':
+                            labelText = 'Starting Studio Price ($)';
+                            backgroundColor = 'rgba(59, 130, 246, 0.6)';
+                            borderColor = 'rgba(59, 130, 246, 1)';
+                            hoverBackgroundColor = 'rgba(37, 99, 235, 1)';
+                            break;
+                        case 'quiet':
+                            labelText = 'Quiet Score (out of 5)';
+                            backgroundColor = 'rgba(168, 85, 247, 0.6)';
+                            borderColor = 'rgba(168, 85, 247, 1)';
+                            hoverBackgroundColor = 'rgba(147, 51, 234, 1)';
+                            break;
+                        case 'management':
+                            labelText = 'Management Score (out of 5)';
+                            backgroundColor = 'rgba(234, 179, 8, 0.6)';
+                            borderColor = 'rgba(234, 179, 8, 1)';
+                            hoverBackgroundColor = 'rgba(202, 138, 4, 1)';
+                            break;
+                        case 'amenities':
+                            labelText = 'Amenity Score (out of 5)';
+                            backgroundColor = 'rgba(239, 68, 68, 0.6)';
+                            borderColor = 'rgba(239, 68, 68, 1)';
+                            hoverBackgroundColor = 'rgba(220, 38, 38, 1)';
+                            break;
+                        default:
+                            labelText = 'Overall Score (out of 5)';
+                    }
+
+                    if (this.propertyChart) {
+                        this.propertyChart.destroy();
+                    }
+
+                    const ctx = document.getElementById('property-chart').getContext('2d');
+                    this.propertyChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: labelText,
+                                data: data,
+                                backgroundColor: backgroundColor,
+                                borderColor: borderColor,
+                                borderWidth: 1,
+                                hoverBackgroundColor: hoverBackgroundColor,
+                                borderRadius: 4,
+                            }]
+                        },
+                        options: {
+                            indexAxis: 'y',
+                            maintainAspectRatio: false,
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    beginAtZero: metric !== 'value',
+                                    grid: {
+                                        drawOnChartArea: false
+                                    }
+                                },
+                                y: {
+                                    grid: {
+                                        display: false
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed.x !== null) {
+                                                if(metric === 'value') {
+                                                   label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(context.parsed.x);
+                                                } else {
+                                                   label += context.parsed.x;
+                                                }
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                populateProfiles() {
+                    const container = document.getElementById('property-profiles-container');
+                    this.propertyData.forEach((p, index) => {
+                        const amenityIcons = {
+                            'pool': '🏊', 'fitness': '💪', 'game': '🎮', 'co-working': '💼', 'rooftop': '🌇', 'concierge': '🛎️', 'yoga': '🧘', 'golf': '⛳', 'library': '📚', 'movie': '🎬', 'bocce': '🎳', 'pizza': '🍕', 'sound': '🎧', 'bike': '🚲', 'club': '🥂', 'plaza': '🌳'
+                        };
+                        const getIcon = (amenity) => {
+                            const lowerAmenity = amenity.toLowerCase();
+                            for (const key in amenityIcons) {
+                                if (lowerAmenity.includes(key)) return amenityIcons[key];
+                            }
+                            return '⭐';
+                        };
+
+                        const profileHTML = `
+                            <article id="${p.id}" class="property-card p-8 scroll-mt-24 scroll-reveal" style="transition-delay: ${index * 0.1}s;">
+                               <div class="flex items-start justify-between mb-6">
+                                   <div>
+                                       <h3 class="text-3xl font-bold gradient-text mb-2">${p.name}</h3>
+                                       <div class="flex items-center space-x-4">
+                                           <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                                               Overall Score: ${p.scores.overall}/5
+                                           </span>
+                                           <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                               ${p.floorPlansPricing.range}
+                                           </span>
+                                       </div>
+                                   </div>
+                                   <div class="feature-icon will-change-transform">🏢</div>
+                               </div>
+
+                               <div class="mb-8">
+                                    <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                        <span class="mr-2">📖</span> Overview
+                                    </h4>
+                                    <p class="text-gray-700 leading-relaxed">${p.overview}</p>
+                               </div>
+
+                               <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                                    <div class="bg-gray-50 p-6 rounded-xl">
+                                        <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                            <span class="mr-2">💰</span> Pricing & Plans
+                                        </h4>
+                                        <div class="space-y-3">
+                                            <p class="text-gray-700"><strong>Price Range:</strong> <span class="text-purple-600 font-medium">${p.floorPlansPricing.range}</span></p>
+                                            <p class="text-gray-700"><strong>Size:</strong> ${p.floorPlansPricing.sqFt}</p>
+                                            <p class="text-gray-700"><strong>Special:</strong> <span class="text-amber-600 font-medium">${p.floorPlansPricing.special}</span></p>
+                                            <p class="text-gray-700"><strong>Availability:</strong> <span class="text-green-600 font-medium">${p.floorPlansPricing.availability}</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="bg-gray-50 p-6 rounded-xl">
+                                        <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                            <span class="mr-2">🎯</span> Amenities
+                                        </h4>
+                                        <div class="grid grid-cols-2 gap-3">
+                                            ${p.amenities.slice(0, 8).map(a => `<div class="flex items-center bg-white px-3 py-2 rounded-lg shadow-sm"><span class="mr-2">${getIcon(a)}</span><span class="text-sm">${a}</span></div>`).join('')}
+                                        </div>
+                                        ${p.amenities.length > 8 ? `<p class="text-sm text-gray-500 mt-3">+ ${p.amenities.length - 8} more amenities</p>` : ''}
+                                    </div>
+                               </div>
+
+                               <div class="mb-8">
+                                    <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                        <span class="mr-2">🏠</span> Resident Experience
+                                    </h4>
+                                    <div class="grid lg:grid-cols-2 gap-6">
+                                        <div class="bg-green-50 p-6 rounded-xl">
+                                            <h5 class="font-semibold text-green-800 mb-3 flex items-center">
+                                                <span class="mr-2">✅</span> Pros
+                                            </h5>
+                                            <ul class="space-y-2">
+                                                ${p.pros.slice(0, 4).map(pro => `<li class="text-sm text-green-700 flex items-start"><span class="mr-2 mt-1">•</span>${pro}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                        <div class="bg-red-50 p-6 rounded-xl">
+                                            <h5 class="font-semibold text-red-800 mb-3 flex items-center">
+                                                <span class="mr-2">⚠️</span> Cons
+                                            </h5>
+                                            <ul class="space-y-2">
+                                                ${p.cons.slice(0, 4).map(con => `<li class="text-sm text-red-700 flex items-start"><span class="mr-2 mt-1">•</span>${con}</li>`).join('')}
+                                            </ul>
+                                        </div>
+                                    </div>
+                               </div>
+
+                               <div class="bg-blue-50 p-6 rounded-xl">
+                                    <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                        <span class="mr-2">🌟</span> Living Experience Summary
+                                    </h4>
+                                    <p class="text-gray-700 leading-relaxed">${p.overallLiving}</p>
+                               </div>
+                            </article>
+                        `;
+                        container.innerHTML += profileHTML;
+                    });
+                }
+                
+                populateComparativeTables() {
+                    const comparisonTableBody = document.getElementById('comparison-table-body');
+                    this.comparativeTablesData.studioComparison.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-gray-50 transition-colors';
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.propertyName}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-purple-600 font-medium">${row.priceRange}</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.specials}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${row.poolType}</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.commonSpaces}</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.outdoorSpaces}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">${row.availability}</td>
+                        `;
+                        comparisonTableBody.appendChild(tr);
+                    });
+
+                    const residentExperienceTableBody = document.getElementById('resident-experience-table-body');
+                    this.comparativeTablesData.residentExperience.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-gray-50 transition-colors';
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.propertyName}</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.management}</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.noise}</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.overallLiving}</td>
+                            <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.petIssues}</td>
+                        `;
+                        residentExperienceTableBody.appendChild(tr);
+                    });
+                }
+                
+                populateRecommendations() {
+                    const tailoredContainer = document.getElementById('tailored-recommendations');
+                    const diligenceContainer = document.getElementById('due-diligence');
+
+                    this.recommendationsData.tailored.forEach(rec => {
+                        tailoredContainer.innerHTML += `
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-purple-800 mb-2">${rec.title}</h4>
+                                <p class="text-sm text-gray-700">${rec.text}</p>
+                            </div>
+                        `;
+                    });
+
+                    this.recommendationsData.diligence.forEach(rec => {
+                        diligenceContainer.innerHTML += `
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2">${rec.title}</h4>
+                                <p class="text-sm text-gray-700">${rec.text}</p>
+                            </div>
+                        `;
+                    });
+                }
+            }
+            
+            // Property data
+            ui.propertyData = [
                 {
                     id: 'anthem',
                     name: 'The Anthem at Square 10',
@@ -1066,144 +1844,8 @@
                 });
             };
 
-            const populateComparativeTables = () => {
-                const comparisonTableBody = document.getElementById('comparison-table-body');
-                comparativeTablesData.studioComparison.forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-gray-50 transition-colors';
-                    tr.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.propertyName}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-purple-600 font-medium">${row.priceRange}</td>
-                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.specials}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${row.poolType}</td>
-                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.commonSpaces}</td>
-                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.outdoorSpaces}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">${row.availability}</td>
-                    `;
-                    comparisonTableBody.appendChild(tr);
-                });
-
-                const residentExperienceTableBody = document.getElementById('resident-experience-table-body');
-                comparativeTablesData.residentExperience.forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-gray-50 transition-colors';
-                    tr.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.propertyName}</td>
-                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.management}</td>
-                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.noise}</td>
-                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.overallLiving}</td>
-                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.petIssues}</td>
-                    `;
-                    residentExperienceTableBody.appendChild(tr);
-                });
-            };
-
-            const populateRecommendations = () => {
-                const tailoredContainer = document.getElementById('tailored-recommendations');
-                const diligenceContainer = document.getElementById('due-diligence');
-
-                recommendationsData.tailored.forEach(rec => {
-                    tailoredContainer.innerHTML += `
-                        <div class="bg-purple-50 p-4 rounded-lg">
-                            <h4 class="font-semibold text-purple-800 mb-2">${rec.title}</h4>
-                            <p class="text-sm text-gray-700">${rec.text}</p>
-                        </div>
-                    `;
-                });
-
-                recommendationsData.diligence.forEach(rec => {
-                    diligenceContainer.innerHTML += `
-                        <div class="bg-blue-50 p-4 rounded-lg">
-                            <h4 class="font-semibold text-blue-800 mb-2">${rec.title}</h4>
-                            <p class="text-sm text-gray-700">${rec.text}</p>
-                        </div>
-                    `;
-                });
-            };
-
-            const setupNavObserver = () => {
-                const sections = document.querySelectorAll('section');
-                const navLinks = document.querySelectorAll('.nav-link');
-
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            navLinks.forEach(link => {
-                                link.classList.remove('active');
-                                if (link.getAttribute('href').substring(1) === entry.target.id) {
-                                    link.classList.add('active');
-                                }
-                            });
-                        }
-                    });
-                }, { rootMargin: "-50% 0px -50% 0px", threshold: 0 });
-
-                sections.forEach(section => observer.observe(section));
-            };
-
-            // Scroll progress indicator
-            const setupScrollIndicator = () => {
-                const scrollIndicator = document.querySelector('.scroll-indicator');
-                
-                window.addEventListener('scroll', () => {
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-                    const scrollProgress = (scrollTop / scrollHeight) * 100;
-                    
-                    scrollIndicator.style.transform = `scaleX(${scrollProgress / 100})`;
-                });
-            };
-
-            // Smooth scroll for navigation links
-            const setupSmoothScroll = () => {
-                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                    anchor.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const target = document.querySelector(this.getAttribute('href'));
-                        if (target) {
-                            target.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    });
-                });
-            };
-
-            // Initialize animations on scroll
-            const setupScrollAnimations = () => {
-                const animatedElements = document.querySelectorAll('.animate-slide-up, .animate-fade-in');
-                
-                const animationObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.style.animationPlayState = 'running';
-                        }
-                    });
-                }, { threshold: 0.1 });
-
-                animatedElements.forEach(el => {
-                    el.style.animationPlayState = 'paused';
-                    animationObserver.observe(el);
-                });
-            };
-
-            document.getElementById('priority-filter').addEventListener('change', (e) => {
-                updateChart(e.target.value);
-            });
-
-            // Initialize everything
-            updateChart('overall');
-            populateProfiles();
-            populateComparativeTables();
-            populateRecommendations();
-            setupNavObserver();
-            setupScrollIndicator();
-            setupSmoothScroll();
-            setupScrollAnimations();
-            
-            // Set first nav link as active
-            document.querySelector('.nav-link').classList.add('active');
+            // Initialize the Modern UI framework
+            ui.init();
         });
     </script>
 </body>

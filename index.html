@@ -20,10 +20,28 @@
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --neutral-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --surface-primary: #ffffff;
+            --surface-secondary: #f7fafc;
+            --border-light: #e2e8f0;
+            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-large: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f7f4; /* Warm neutral background */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
         }
+        
         .chart-container {
             position: relative;
             width: 100%;
@@ -31,130 +49,437 @@
             margin-left: auto;
             margin-right: auto;
             height: 350px;
+            background: var(--surface-primary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-medium);
         }
+        
         @media (min-width: 768px) {
             .chart-container {
                 height: 450px;
             }
         }
+        
         .nav-link {
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::before,
+        .nav-link.active::before {
+            width: 100%;
+        }
+        
         .nav-link.active {
-            color: #0d9488; /* Teal-600 */
-            border-bottom-color: #0d9488;
+            color: #667eea;
+            font-weight: 600;
         }
+        
+        .card-modern {
+            background: var(--surface-primary);
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card-modern:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-large);
+        }
+        
+        .card-modern:hover::before {
+            opacity: 1;
+        }
+        
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .btn-modern {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--accent-gradient);
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         details > summary {
             list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+            background: var(--surface-secondary);
+            border-radius: 0.75rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
         }
+        
+        details > summary:hover {
+            background: var(--surface-primary);
+            box-shadow: var(--shadow-soft);
+        }
+        
         details > summary::-webkit-details-marker {
             display: none;
         }
+        
         details > summary::after {
             content: '+';
             float: right;
-            transition: transform 0.2s ease;
+            font-size: 1.5rem;
+            color: #667eea;
+            transition: transform 0.3s ease;
         }
+        
         details[open] > summary::after {
-            content: '-';
-            transform: rotate(90deg);
+            content: '−';
+            transform: rotate(180deg);
+        }
+        
+        .property-card {
+            background: var(--surface-primary);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .property-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .property-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-large);
+        }
+        
+        .property-card:hover::before {
+            opacity: 1;
+        }
+        
+        .sticky-nav {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-section {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><defs><linearGradient id="a" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:rgba(255,255,255,0.1)"/><stop offset="100%" style="stop-color:rgba(255,255,255,0.05)"/></linearGradient></defs><path d="M0,100 Q250,50 500,100 T1000,100 L1000,0 L0,0 Z" fill="url(%23a)"/></svg>') no-repeat;
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+            transform-origin: 0%;
+            transform: scaleX(0);
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+        
+        .table-modern {
+            background: var(--surface-primary);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .table-modern thead {
+            background: var(--primary-gradient);
+            color: white;
+        }
+        
+        .table-modern tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        .table-modern tbody tr:hover {
+            background: var(--surface-secondary);
+            transform: scale(1.01);
+        }
+        
+        .loading-skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, transparent 37%, transparent 63%, #f0f0f0 75%);
+            background-size: 400% 100%;
+            animation: skeleton-loading 1.4s ease infinite;
+        }
+        
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: -100% 50%;
+            }
         }
     </style>
 </head>
 <body class="text-gray-800 antialiased">
-
-    <div id="app" class="container mx-auto p-4 md:p-8">
-
-        <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Downtown New Haven Studio Finder</h1>
-            <p class="mt-2 text-lg text-gray-600">An interactive guide to luxury apartments with pools around $2200.</p>
+    <div class="scroll-indicator"></div>
+    
+    <div id="app" class="min-h-screen">
+        <header class="hero-section animate-fade-in">
+            <div class="container mx-auto px-4 relative z-10">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+                    Downtown New Haven <span class="block text-3xl md:text-5xl">Studio Finder</span>
+                </h1>
+                <p class="text-xl md:text-2xl opacity-90 mb-8 max-w-2xl mx-auto">
+                    Your interactive guide to luxury apartments with pools around $2200
+                </p>
+                <button class="btn-modern text-lg px-8 py-3" onclick="document.getElementById('comparison-section').scrollIntoView({behavior: 'smooth'})">
+                    Explore Properties
+                </button>
+            </div>
         </header>
 
-        <nav class="sticky top-0 bg-f8f7f4/80 backdrop-blur-sm z-10 mb-8 py-2 border-b border-gray-200">
-            <ul class="flex justify-center items-center space-x-4 md:space-x-8">
-                <li><a href="#comparison-section" class="nav-link active font-semibold text-gray-500 hover:text-teal-600 border-b-2 border-transparent pb-2">Comparison</a></li>
-                <li><a href="#profiles-section" class="nav-link font-semibold text-gray-500 hover:text-teal-600 border-b-2 border-transparent pb-2">Profiles</a></li>
-                <li><a href="#comparative-insights-section" class="nav-link font-semibold text-gray-500 hover:text-teal-600 border-b-2 border-transparent pb-2">Insights</a></li>
-                <li><a href="#recommendations-section" class="nav-link font-semibold text-gray-500 hover:text-teal-600 border-b-2 border-transparent pb-2">Recommendations</a></li>
-            </ul>
+        <nav class="sticky-nav sticky top-0 z-50 py-4 border-b border-gray-200">
+            <div class="container mx-auto px-4">
+                <ul class="flex justify-center items-center space-x-8">
+                    <li><a href="#comparison-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2">Comparison</a></li>
+                    <li><a href="#profiles-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2">Profiles</a></li>
+                    <li><a href="#comparative-insights-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2">Insights</a></li>
+                    <li><a href="#recommendations-section" class="nav-link font-semibold text-gray-600 hover:text-purple-600 pb-2">Recommendations</a></li>
+                </ul>
+            </div>
         </nav>
 
-        <main>
-            <section id="comparison-section" class="mb-16">
-                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-                    <h2 class="text-2xl font-bold text-center mb-2">Property Comparison</h2>
-                    <p class="text-center text-gray-600 mb-6">Select a priority to see how the top contenders stack up. Click a property's name on the chart to jump to its detailed profile.</p>
-                    <div class="flex justify-center items-center mb-6">
-                        <label for="priority-filter" class="mr-3 font-semibold text-gray-700">Prioritize by:</label>
-                        <select id="priority-filter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-teal-500 focus:border-teal-500 block p-2.5">
-                            <option value="overall" selected>Overall Score</option>
-                            <option value="value">Best Value (Price)</option>
-                            <option value="quiet">Quietest Environment</option>
-                            <option value="management">Best Management</option>
-                            <option value="amenities">Most Amenities</option>
-                        </select>
+        <main class="container mx-auto px-4 py-8">
+            <section id="comparison-section" class="mb-20 animate-slide-up">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold gradient-text mb-4">Property Comparison</h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Select a priority to see how the top contenders stack up. Click a property's name on the chart to jump to its detailed profile.
+                    </p>
+                </div>
+                
+                <div class="card-modern p-8 mb-8">
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
+                        <div class="feature-icon">
+                            <span>📊</span>
+                        </div>
+                        <div class="flex-1 text-center md:text-left">
+                            <label for="priority-filter" class="text-lg font-semibold text-gray-700 block mb-2">Prioritize by:</label>
+                            <select id="priority-filter" class="bg-white border-2 border-gray-200 text-gray-900 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                <option value="overall" selected>Overall Score</option>
+                                <option value="value">Best Value (Price)</option>
+                                <option value="quiet">Quietest Environment</option>
+                                <option value="management">Best Management</option>
+                                <option value="amenities">Most Amenities</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="chart-container">
                         <canvas id="property-chart"></canvas>
                     </div>
                 </div>
-            </section>
-
-            <section id="profiles-section" class="mb-16">
-                <h2 class="text-2xl font-bold text-center mb-2">Deep Dive Profiles</h2>
-                 <p class="text-center text-gray-600 mb-8">Explore detailed information on each property, including amenities, pricing, and a comprehensive summary of resident experiences.</p>
-                <div id="property-profiles-container" class="space-y-8">
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-12">
+                    <div class="card-modern p-6 text-center">
+                        <div class="feature-icon mx-auto">💰</div>
+                        <h3 class="text-xl font-semibold mb-2">Best Value</h3>
+                        <p class="text-gray-600">Compare pricing and get the most for your money</p>
+                    </div>
+                    <div class="card-modern p-6 text-center">
+                        <div class="feature-icon mx-auto">🏊</div>
+                        <h3 class="text-xl font-semibold mb-2">Premium Amenities</h3>
+                        <p class="text-gray-600">Luxury pools, fitness centers, and modern spaces</p>
+                    </div>
+                    <div class="card-modern p-6 text-center">
+                        <div class="feature-icon mx-auto">🏙️</div>
+                        <h3 class="text-xl font-semibold mb-2">Prime Location</h3>
+                        <p class="text-gray-600">Downtown convenience with walkable access</p>
+                    </div>
                 </div>
             </section>
 
-            <section id="comparative-insights-section" class="mb-16">
-                <h2 class="text-2xl font-bold text-center mb-2">Comparative Insights</h2>
-                <p class="text-center text-gray-600 mb-8">Delve deeper into the nuances of each property, comparing them across key aspects of urban living.</p>
+            <section id="profiles-section" class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold gradient-text mb-4">Deep Dive Profiles</h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Explore detailed information on each property, including amenities, pricing, and comprehensive resident experiences.
+                    </p>
+                </div>
+                <div id="property-profiles-container" class="space-y-12">
+                </div>
+            </section>
 
-                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 mb-8">
-                    <h3 class="text-xl font-semibold border-b pb-2 mb-4">Studio Apartment Comparison (Pricing, Amenities, Availability)</h3>
+            <section id="comparative-insights-section" class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold gradient-text mb-4">Comparative Insights</h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Delve deeper into the nuances of each property, comparing them across key aspects of urban living.
+                    </p>
+                </div>
+
+                <div class="card-modern p-8 mb-8">
+                    <div class="flex items-center mb-6">
+                        <div class="feature-icon mr-4">📋</div>
+                        <h3 class="text-2xl font-semibold">Studio Apartment Comparison</h3>
+                    </div>
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                        <table class="table-modern min-w-full">
+                            <thead>
                                 <tr>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property Name</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Studio Price Range (Base Rent)</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Specials</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pool (Type)</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key Common Spaces</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key Outdoor Spaces</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earliest Studio Availability</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Property Name</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Studio Price Range</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Current Specials</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Pool Type</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Common Spaces</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Outdoor Spaces</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Availability</th>
                                 </tr>
                             </thead>
-                            <tbody id="comparison-table-body" class="bg-white divide-y divide-gray-200">
+                            <tbody id="comparison-table-body" class="divide-y divide-gray-200">
                                 <!-- Table rows will be populated by JS -->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 mb-8">
-                    <h3 class="text-xl font-semibold border-b pb-2 mb-4">Resident Experience Snapshot (Management, Noise, Overall Satisfaction)</h3>
+                <div class="card-modern p-8 mb-8">
+                    <div class="flex items-center mb-6">
+                        <div class="feature-icon mr-4">⭐</div>
+                        <h3 class="text-2xl font-semibold">Resident Experience Snapshot</h3>
+                    </div>
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                        <table class="table-modern min-w-full">
+                            <thead>
                                 <tr>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property Name</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Management Reputation</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Noise Levels</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Overall Living Experience</th>
-                                    <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pet Friendliness/Issues</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Property Name</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Management</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Noise Levels</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Living Experience</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">Pet Friendliness</th>
                                 </tr>
                             </thead>
-                            <tbody id="resident-experience-table-body" class="bg-white divide-y divide-gray-200">
+                            <tbody id="resident-experience-table-body" class="divide-y divide-gray-200">
                                 <!-- Table rows will be populated by JS -->
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 space-y-4">
-                    <h3 class="text-xl font-semibold border-b pb-2 mb-4">Comparative Insights: Value, Lifestyle, and Trade-offs</h3>
+                <div class="card-modern p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="feature-icon mr-4">💡</div>
+                        <h3 class="text-2xl font-semibold">Comparative Insights: Value, Lifestyle, and Trade-offs</h3>
+                    </div>
 
                     <details class="group">
                         <summary class="flex justify-between items-center font-semibold cursor-pointer py-2 text-teal-700">
@@ -203,15 +528,29 @@
                 </div>
             </section>
 
-            <section id="recommendations-section">
-                <h2 class="text-2xl font-bold text-center mb-2">Recommendations & Key Considerations</h2>
-                 <p class="text-center text-gray-600 mb-8">Based on the analysis, here are tailored recommendations and essential next steps for your apartment search.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div id="tailored-recommendations" class="bg-white p-6 rounded-xl shadow-md border border-gray-100 space-y-4">
-                        <h3 class="text-xl font-semibold border-b pb-2">Tailored Recommendations</h3>
+            <section id="recommendations-section" class="mb-20">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold gradient-text mb-4">Recommendations & Key Considerations</h2>
+                    <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                        Based on our analysis, here are tailored recommendations and essential next steps for your apartment search.
+                    </p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="card-modern p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="feature-icon mr-4">🎯</div>
+                            <h3 class="text-2xl font-semibold">Tailored Recommendations</h3>
+                        </div>
+                        <div id="tailored-recommendations" class="space-y-6">
+                        </div>
                     </div>
-                    <div id="due-diligence" class="bg-white p-6 rounded-xl shadow-md border border-gray-100 space-y-4">
-                         <h3 class="text-xl font-semibold border-b pb-2">Essential Due Diligence</h3>
+                    <div class="card-modern p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="feature-icon mr-4">✅</div>
+                            <h3 class="text-2xl font-semibold">Essential Due Diligence</h3>
+                        </div>
+                        <div id="due-diligence" class="space-y-6">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -632,7 +971,7 @@
 
             const populateProfiles = () => {
                 const container = document.getElementById('property-profiles-container');
-                propertyData.forEach(p => {
+                propertyData.forEach((p, index) => {
                     const amenityIcons = {
                         'pool': '🏊', 'fitness': '💪', 'game': '🎮', 'co-working': '💼', 'rooftop': '🌇', 'concierge': '🛎️', 'yoga': '🧘', 'golf': '⛳', 'library': '📚', 'movie': '🎬', 'bocce': '🎳', 'pizza': '🍕', 'sound': '🎧', 'bike': '🚲', 'club': '🥂', 'plaza': '🌳'
                     };
@@ -645,51 +984,81 @@
                     };
 
                     const profileHTML = `
-                        <article id="${p.id}" class="bg-white p-6 rounded-xl shadow-md border border-gray-100 scroll-mt-24">
-                           <h3 class="text-2xl font-bold text-teal-700 mb-4">${p.name}</h3>
-
-                           <div class="mb-6">
-                                <h4 class="text-xl font-semibold border-b pb-2 mb-2">Overview</h4>
-                                <p class="text-gray-700 text-sm">${p.overview}</p>
+                        <article id="${p.id}" class="property-card p-8 scroll-mt-24" style="animation-delay: ${index * 0.1}s">
+                           <div class="flex items-start justify-between mb-6">
+                               <div>
+                                   <h3 class="text-3xl font-bold gradient-text mb-2">${p.name}</h3>
+                                   <div class="flex items-center space-x-4">
+                                       <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                                           Overall Score: ${p.scores.overall}/5
+                                       </span>
+                                       <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                           ${p.floorPlansPricing.range}
+                                       </span>
+                                   </div>
+                               </div>
+                               <div class="feature-icon">🏢</div>
                            </div>
 
-                           <div class="md:grid md:grid-cols-2 gap-8 mb-6">
-                                <div>
-                                    <h4 class="text-xl font-semibold border-b pb-2 mb-2">Studio Floor Plans & Pricing</h4>
-                                    <p class="text-gray-700 text-sm"><strong>Price Range:</strong> ${p.floorPlansPricing.range}</p>
-                                    <p class="text-gray-700 text-sm"><strong>Size:</strong> ${p.floorPlansPricing.sqFt}</p>
-                                    <p class="text-gray-700 text-sm"><strong>Special:</strong> <span class="text-amber-600 font-medium">${p.floorPlansPricing.special}</span></p>
-                                    <p class="text-gray-700 text-sm"><strong>Availability:</strong> ${p.floorPlansPricing.availability}</p>
-                                </div>
-                                <div>
-                                    <h4 class="text-xl font-semibold border-b pb-2 mb-2">Amenities Spotlight</h4>
-                                    <div class="flex flex-wrap gap-3 text-sm">
-                                        ${p.amenities.map(a => `<span class="flex items-center bg-teal-50 text-teal-800 px-2 py-1 rounded-full">${getIcon(a)}<span class="ml-1.5">${a}</span></span>`).join('')}
+                           <div class="mb-8">
+                                <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                    <span class="mr-2">📖</span> Overview
+                                </h4>
+                                <p class="text-gray-700 leading-relaxed">${p.overview}</p>
+                           </div>
+
+                           <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                                <div class="bg-gray-50 p-6 rounded-xl">
+                                    <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                        <span class="mr-2">💰</span> Pricing & Plans
+                                    </h4>
+                                    <div class="space-y-3">
+                                        <p class="text-gray-700"><strong>Price Range:</strong> <span class="text-purple-600 font-medium">${p.floorPlansPricing.range}</span></p>
+                                        <p class="text-gray-700"><strong>Size:</strong> ${p.floorPlansPricing.sqFt}</p>
+                                        <p class="text-gray-700"><strong>Special:</strong> <span class="text-amber-600 font-medium">${p.floorPlansPricing.special}</span></p>
+                                        <p class="text-gray-700"><strong>Availability:</strong> <span class="text-green-600 font-medium">${p.floorPlansPricing.availability}</span></p>
                                     </div>
                                 </div>
+                                <div class="bg-gray-50 p-6 rounded-xl">
+                                    <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                        <span class="mr-2">🎯</span> Amenities
+                                    </h4>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        ${p.amenities.slice(0, 8).map(a => `<div class="flex items-center bg-white px-3 py-2 rounded-lg shadow-sm"><span class="mr-2">${getIcon(a)}</span><span class="text-sm">${a}</span></div>`).join('')}
+                                    </div>
+                                    ${p.amenities.length > 8 ? `<p class="text-sm text-gray-500 mt-3">+ ${p.amenities.length - 8} more amenities</p>` : ''}
+                                </div>
                            </div>
 
-                           <div class="mb-6">
-                                <h4 class="text-xl font-semibold border-b pb-2 mb-2">Resident Experience</h4>
-                                <div class="grid md:grid-cols-2 gap-4 text-sm">
-                                    <div>
-                                        <strong class="text-green-600">Pros:</strong>
-                                        <ul class="list-disc list-inside mt-1 space-y-1">
-                                            ${p.pros.map(pro => `<li>${pro}</li>`).join('')}
+                           <div class="mb-8">
+                                <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                    <span class="mr-2">🏠</span> Resident Experience
+                                </h4>
+                                <div class="grid lg:grid-cols-2 gap-6">
+                                    <div class="bg-green-50 p-6 rounded-xl">
+                                        <h5 class="font-semibold text-green-800 mb-3 flex items-center">
+                                            <span class="mr-2">✅</span> Pros
+                                        </h5>
+                                        <ul class="space-y-2">
+                                            ${p.pros.slice(0, 4).map(pro => `<li class="text-sm text-green-700 flex items-start"><span class="mr-2 mt-1">•</span>${pro}</li>`).join('')}
                                         </ul>
                                     </div>
-                                    <div>
-                                        <strong class="text-red-600">Cons:</strong>
-                                        <ul class="list-disc list-inside mt-1 space-y-1">
-                                            ${p.cons.map(con => `<li>${con}</li>`).join('')}
+                                    <div class="bg-red-50 p-6 rounded-xl">
+                                        <h5 class="font-semibold text-red-800 mb-3 flex items-center">
+                                            <span class="mr-2">⚠️</span> Cons
+                                        </h5>
+                                        <ul class="space-y-2">
+                                            ${p.cons.slice(0, 4).map(con => `<li class="text-sm text-red-700 flex items-start"><span class="mr-2 mt-1">•</span>${con}</li>`).join('')}
                                         </ul>
                                     </div>
                                 </div>
                            </div>
 
-                           <div>
-                                <h4 class="text-xl font-semibold border-b pb-2 mb-2">Overall Living</h4>
-                                <p class="text-gray-700 text-sm">${p.overallLiving}</p>
+                           <div class="bg-blue-50 p-6 rounded-xl">
+                                <h4 class="text-xl font-semibold mb-4 flex items-center">
+                                    <span class="mr-2">🌟</span> Living Experience Summary
+                                </h4>
+                                <p class="text-gray-700 leading-relaxed">${p.overallLiving}</p>
                            </div>
                         </article>
                     `;
@@ -701,14 +1070,15 @@
                 const comparisonTableBody = document.getElementById('comparison-table-body');
                 comparativeTablesData.studioComparison.forEach(row => {
                     const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-gray-50 transition-colors';
                     tr.innerHTML = `
-                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">${row.propertyName}</td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-700">${row.priceRange}</td>
-                        <td class="px-3 py-2 whitespace-normal text-sm text-gray-700">${row.specials}</td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-700">${row.poolType}</td>
-                        <td class="px-3 py-2 whitespace-normal text-sm text-gray-700">${row.commonSpaces}</td>
-                        <td class="px-3 py-2 whitespace-normal text-sm text-gray-700">${row.outdoorSpaces}</td>
-                        <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-700">${row.availability}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.propertyName}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-purple-600 font-medium">${row.priceRange}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.specials}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${row.poolType}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.commonSpaces}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.outdoorSpaces}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">${row.availability}</td>
                     `;
                     comparisonTableBody.appendChild(tr);
                 });
@@ -716,12 +1086,13 @@
                 const residentExperienceTableBody = document.getElementById('resident-experience-table-body');
                 comparativeTablesData.residentExperience.forEach(row => {
                     const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-gray-50 transition-colors';
                     tr.innerHTML = `
-                        <td class="px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-900">${row.propertyName}</td>
-                        <td class="px-3 py-2 whitespace-normal text-sm text-gray-700">${row.management}</td>
-                        <td class="px-3 py-2 whitespace-normal text-sm text-gray-700">${row.noise}</td>
-                        <td class="px-3 py-2 whitespace-normal text-sm text-gray-700">${row.overallLiving}</td>
-                        <td class="px-3 py-2 whitespace-normal text-sm text-gray-700">${row.petIssues}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${row.propertyName}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.management}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.noise}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.overallLiving}</td>
+                        <td class="px-6 py-4 whitespace-normal text-sm text-gray-700">${row.petIssues}</td>
                     `;
                     residentExperienceTableBody.appendChild(tr);
                 });
@@ -733,18 +1104,18 @@
 
                 recommendationsData.tailored.forEach(rec => {
                     tailoredContainer.innerHTML += `
-                        <div>
-                            <h4 class="font-semibold text-teal-700">${rec.title}</h4>
-                            <p class="text-sm text-gray-600">${rec.text}</p>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-800 mb-2">${rec.title}</h4>
+                            <p class="text-sm text-gray-700">${rec.text}</p>
                         </div>
                     `;
                 });
 
                 recommendationsData.diligence.forEach(rec => {
                     diligenceContainer.innerHTML += `
-                        <div>
-                            <h4 class="font-semibold text-teal-700">${rec.title}</h4>
-                            <p class="text-sm text-gray-600">${rec.text}</p>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800 mb-2">${rec.title}</h4>
+                            <p class="text-sm text-gray-700">${rec.text}</p>
                         </div>
                     `;
                 });
@@ -758,7 +1129,10 @@
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             navLinks.forEach(link => {
-                                link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                                link.classList.remove('active');
+                                if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                    link.classList.add('active');
+                                }
                             });
                         }
                     });
@@ -767,15 +1141,69 @@
                 sections.forEach(section => observer.observe(section));
             };
 
+            // Scroll progress indicator
+            const setupScrollIndicator = () => {
+                const scrollIndicator = document.querySelector('.scroll-indicator');
+                
+                window.addEventListener('scroll', () => {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                    const scrollProgress = (scrollTop / scrollHeight) * 100;
+                    
+                    scrollIndicator.style.transform = `scaleX(${scrollProgress / 100})`;
+                });
+            };
+
+            // Smooth scroll for navigation links
+            const setupSmoothScroll = () => {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+            };
+
+            // Initialize animations on scroll
+            const setupScrollAnimations = () => {
+                const animatedElements = document.querySelectorAll('.animate-slide-up, .animate-fade-in');
+                
+                const animationObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.animationPlayState = 'running';
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                animatedElements.forEach(el => {
+                    el.style.animationPlayState = 'paused';
+                    animationObserver.observe(el);
+                });
+            };
+
             document.getElementById('priority-filter').addEventListener('change', (e) => {
                 updateChart(e.target.value);
             });
 
+            // Initialize everything
             updateChart('overall');
             populateProfiles();
             populateComparativeTables();
             populateRecommendations();
             setupNavObserver();
+            setupScrollIndicator();
+            setupSmoothScroll();
+            setupScrollAnimations();
+            
+            // Set first nav link as active
+            document.querySelector('.nav-link').classList.add('active');
         });
     </script>
 </body>

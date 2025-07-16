@@ -838,15 +838,18 @@
                     this.setupRecommendationsData();
                     this.setupComparativeTablesData();
                     
-                    // Initialize all data and charts
-                    this.initializeCharts();
-                    this.populateProfiles();
-                    this.populateComparativeTables();
-                    this.populateRecommendations();
-                    
                     // Debug: Check if elements are populated
                     console.log('Property data loaded:', this.propertyData?.length || 0, 'properties');
                     console.log('Profiles container:', document.getElementById('property-profiles-container'));
+                    
+                    // Add a small delay to ensure DOM is ready
+                    setTimeout(() => {
+                        // Initialize all data and charts
+                        this.initializeCharts();
+                        this.populateProfiles();
+                        this.populateComparativeTables();
+                        this.populateRecommendations();
+                    }, 100);
                 }
                 
                 setupPropertyData() {
@@ -1188,100 +1191,101 @@
                 }
                 
                 populateProfiles() {
+                    console.log('populateProfiles called');
                     const container = document.getElementById('property-profiles-container');
+                    console.log('Container found:', container);
+                    console.log('Property data:', this.propertyData);
+                    
+                    if (!container) {
+                        console.error('Container not found!');
+                        return;
+                    }
+                    
+                    if (!this.propertyData || this.propertyData.length === 0) {
+                        console.error('No property data!');
+                        return;
+                    }
+                    
+                    // Clear container first
+                    container.innerHTML = '';
+                    
                     this.propertyData.forEach((p, index) => {
-                        const amenityIcons = {
-                            'pool': '🏊', 'fitness': '💪', 'game': '🎮', 'co-working': '💼', 'rooftop': '🌇', 'concierge': '🛎️', 'yoga': '🧘', 'golf': '⛳', 'library': '📚', 'movie': '🎬', 'bocce': '🎳', 'pizza': '🍕', 'sound': '🎧', 'bike': '🚲', 'club': '🥂', 'plaza': '🌳'
-                        };
-                        const getIcon = (amenity) => {
-                            const lowerAmenity = amenity.toLowerCase();
-                            for (const key in amenityIcons) {
-                                if (lowerAmenity.includes(key)) return amenityIcons[key];
-                            }
-                            return '⭐';
-                        };
-
-                        const profileHTML = `
-                            <article id="${p.id}" class="property-card p-8 scroll-mt-24 scroll-reveal" style="transition-delay: ${index * 0.1}s;">
-                               <div class="flex items-start justify-between mb-6">
-                                   <div>
-                                       <h3 class="text-3xl font-bold gradient-text mb-2">${p.name}</h3>
-                                       <div class="flex items-center space-x-4">
-                                           <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
-                                               Overall Score: ${p.scores.overall}/5
-                                           </span>
-                                           <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                                               ${p.floorPlansPricing.range || 'Contact for pricing'}
-                                           </span>
-                                       </div>
-                                   </div>
-                                   <div class="feature-icon will-change-transform">🏢</div>
-                               </div>
-
-                               <div class="mb-8">
-                                    <h4 class="text-xl font-semibold mb-4 flex items-center">
-                                        <span class="mr-2">📖</span> Overview
-                                    </h4>
-                                    <p class="text-gray-700 leading-relaxed">${p.overview}</p>
-                               </div>
-
-                               <div class="grid lg:grid-cols-2 gap-8 mb-8">
-                                    <div class="bg-gray-50 p-6 rounded-xl">
-                                        <h4 class="text-xl font-semibold mb-4 flex items-center">
-                                            <span class="mr-2">💰</span> Pricing & Plans
-                                        </h4>
-                                        <div class="space-y-3">
-                                            <p class="text-gray-700"><strong>Price Range:</strong> <span class="text-purple-600 font-medium">${p.floorPlansPricing.range || 'Contact for pricing'}</span></p>
-                                            <p class="text-gray-700"><strong>Size:</strong> ${p.floorPlansPricing.sqFt || 'Varies'}</p>
-                                            <p class="text-gray-700"><strong>Special:</strong> <span class="text-amber-600 font-medium">${p.floorPlansPricing.special || 'None currently'}</span></p>
-                                            <p class="text-gray-700"><strong>Availability:</strong> <span class="text-green-600 font-medium">${p.floorPlansPricing.availability || 'Contact property'}</span></p>
-                                        </div>
+                        console.log('Processing property:', p.name);
+                        
+                        // Create simple profile element
+                        const profileDiv = document.createElement('div');
+                        profileDiv.className = 'property-card p-8 scroll-mt-24 mb-8';
+                        profileDiv.id = p.id;
+                        
+                        profileDiv.innerHTML = `
+                            <div class="flex items-start justify-between mb-6">
+                                <div>
+                                    <h3 class="text-3xl font-bold gradient-text mb-2">${p.name}</h3>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                                            Overall Score: ${p.scores.overall}/5
+                                        </span>
+                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                            ${p.floorPlansPricing.range || 'Contact for pricing'}
+                                        </span>
                                     </div>
-                                    <div class="bg-gray-50 p-6 rounded-xl">
-                                        <h4 class="text-xl font-semibold mb-4 flex items-center">
-                                            <span class="mr-2">🎯</span> Amenities
-                                        </h4>
-                                        <div class="grid grid-cols-2 gap-3">
-                                            ${p.amenities.slice(0, 8).map(a => `<div class="flex items-center bg-white px-3 py-2 rounded-lg shadow-sm"><span class="mr-2">${getIcon(a)}</span><span class="text-sm">${a}</span></div>`).join('')}
-                                        </div>
-                                        ${p.amenities.length > 8 ? `<p class="text-sm text-gray-500 mt-3">+ ${p.amenities.length - 8} more amenities</p>` : ''}
+                                </div>
+                                <div class="feature-icon">🏢</div>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <h4 class="text-xl font-semibold mb-4">📖 Overview</h4>
+                                <p class="text-gray-700 leading-relaxed">${p.overview}</p>
+                            </div>
+                            
+                            <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                                <div class="bg-gray-50 p-6 rounded-xl">
+                                    <h4 class="text-xl font-semibold mb-4">💰 Pricing & Plans</h4>
+                                    <div class="space-y-3">
+                                        <p class="text-gray-700"><strong>Price Range:</strong> <span class="text-purple-600 font-medium">${p.floorPlansPricing.range || 'Contact for pricing'}</span></p>
+                                        <p class="text-gray-700"><strong>Size:</strong> ${p.floorPlansPricing.sqFt || 'Varies'}</p>
+                                        <p class="text-gray-700"><strong>Special:</strong> <span class="text-amber-600 font-medium">${p.floorPlansPricing.special || 'None currently'}</span></p>
+                                        <p class="text-gray-700"><strong>Availability:</strong> <span class="text-green-600 font-medium">${p.floorPlansPricing.availability || 'Contact property'}</span></p>
                                     </div>
-                               </div>
-
-                               <div class="mb-8">
-                                    <h4 class="text-xl font-semibold mb-4 flex items-center">
-                                        <span class="mr-2">🏠</span> Resident Experience
-                                    </h4>
-                                    <div class="grid lg:grid-cols-2 gap-6">
-                                        <div class="bg-green-50 p-6 rounded-xl">
-                                            <h5 class="font-semibold text-green-800 mb-3 flex items-center">
-                                                <span class="mr-2">✅</span> Pros
-                                            </h5>
-                                            <ul class="space-y-2">
-                                                ${p.pros.slice(0, 4).map(pro => `<li class="text-sm text-green-700 flex items-start"><span class="mr-2 mt-1">•</span>${pro}</li>`).join('')}
-                                            </ul>
-                                        </div>
-                                        <div class="bg-red-50 p-6 rounded-xl">
-                                            <h5 class="font-semibold text-red-800 mb-3 flex items-center">
-                                                <span class="mr-2">⚠️</span> Cons
-                                            </h5>
-                                            <ul class="space-y-2">
-                                                ${p.cons.slice(0, 4).map(con => `<li class="text-sm text-red-700 flex items-start"><span class="mr-2 mt-1">•</span>${con}</li>`).join('')}
-                                            </ul>
-                                        </div>
+                                </div>
+                                <div class="bg-gray-50 p-6 rounded-xl">
+                                    <h4 class="text-xl font-semibold mb-4">🎯 Amenities</h4>
+                                    <div class="space-y-2">
+                                        ${p.amenities.slice(0, 6).map(a => `<div class="text-sm">• ${a}</div>`).join('')}
                                     </div>
-                               </div>
-
-                               <div class="bg-blue-50 p-6 rounded-xl">
-                                    <h4 class="text-xl font-semibold mb-4 flex items-center">
-                                        <span class="mr-2">🌟</span> Living Experience Summary
-                                    </h4>
-                                    <p class="text-gray-700 leading-relaxed">${p.overallLiving}</p>
-                               </div>
-                            </article>
+                                    ${p.amenities.length > 6 ? `<p class="text-sm text-gray-500 mt-3">+ ${p.amenities.length - 6} more amenities</p>` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <h4 class="text-xl font-semibold mb-4">🏠 Resident Experience</h4>
+                                <div class="grid lg:grid-cols-2 gap-6">
+                                    <div class="bg-green-50 p-6 rounded-xl">
+                                        <h5 class="font-semibold text-green-800 mb-3">✅ Pros</h5>
+                                        <ul class="space-y-2">
+                                            ${p.pros.slice(0, 4).map(pro => `<li class="text-sm text-green-700">• ${pro}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                    <div class="bg-red-50 p-6 rounded-xl">
+                                        <h5 class="font-semibold text-red-800 mb-3">⚠️ Cons</h5>
+                                        <ul class="space-y-2">
+                                            ${p.cons.slice(0, 4).map(con => `<li class="text-sm text-red-700">• ${con}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-blue-50 p-6 rounded-xl">
+                                <h4 class="text-xl font-semibold mb-4">🌟 Living Experience Summary</h4>
+                                <p class="text-gray-700 leading-relaxed">${p.overallLiving}</p>
+                            </div>
                         `;
-                        container.innerHTML += profileHTML;
+                        
+                        container.appendChild(profileDiv);
+                        console.log('Added profile for:', p.name);
                     });
+                    
+                    console.log('populateProfiles completed, container children:', container.children.length);
                 }
                 
                 populateComparativeTables() {

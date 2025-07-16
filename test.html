@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+</head>
+<body>
+    <div id="property-profiles-container"></div>
+    
+    <script>
+        // Test the property data structure
+        const propertyData = [
+            {
+                id: 'anthem',
+                name: 'The Anthem at Square 10',
+                overview: 'Test overview',
+                floorPlansPricing: {
+                    range: '$1,795 - $2,335',
+                    sqFt: 'Varies',
+                    special: 'Test special',
+                    availability: 'Currently Available'
+                },
+                amenities: ['Pool', 'Fitness'],
+                pros: ['Good management', 'Nice location'],
+                cons: ['Higher price', 'Limited availability'],
+                overallLiving: 'Test overall living experience',
+                scores: { overall: 4.5, quiet: 4.8, management: 4.9, amenities: 4.3, value: 4.2 }
+            }
+        ];
+        
+        const container = document.getElementById('property-profiles-container');
+        console.log('Container found:', container);
+        console.log('Property data:', propertyData);
+        
+        // Simple test
+        propertyData.forEach((p, index) => {
+            console.log('Processing property:', p.name);
+            const profileHTML = `
+                <div style="border: 1px solid #ccc; padding: 20px; margin: 10px;">
+                    <h3>${p.name}</h3>
+                    <p>${p.overview}</p>
+                    <p>Price: ${p.floorPlansPricing.range}</p>
+                    <p>Amenities: ${p.amenities.join(', ')}</p>
+                    <p>Pros: ${p.pros.join(', ')}</p>
+                    <p>Cons: ${p.cons.join(', ')}</p>
+                    <p>Overall: ${p.overallLiving}</p>
+                </div>
+            `;
+            container.innerHTML += profileHTML;
+        });
+        
+        console.log('Final container content:', container.innerHTML);
+    </script>
+</body>
+</html>
